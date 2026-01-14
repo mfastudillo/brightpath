@@ -1,18 +1,18 @@
 import csv
+import json
+import logging
+import re
+from pathlib import Path
+from typing import Dict, Tuple
 
 import bw2io
-
-from . import DATA_DIR
-from typing import Dict, Tuple
-import json
+import numpy as np
 import yaml
 from bw2io.importers.excel import ExcelImporter
-from pathlib import Path
-from voluptuous import Schema, Required, Optional, Url
 from prettytable import PrettyTable
-import numpy as np
-import re
-import logging
+from voluptuous import Optional, Required, Schema, Url
+
+from . import DATA_DIR
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -431,7 +431,7 @@ def is_activity_waste_treatment(activity: dict, database: str) -> bool:
     """
 
     if "type" in activity:
-        if activity["type"] == "process":
+        if activity["type"] == "processwithreferenceproduct":
             return False
         if activity["type"] == "waste treatment":
             return True
@@ -506,7 +506,8 @@ def get_biosphere_exchanges(activity: dict, category: str = None) -> list:
     ]
 
 
-def format_exchange_name(name: str, reference_product: str, location: str, unit: str, database: str) -> str:
+def format_exchange_name(name: str, reference_product: str, location: str, unit: str, database: str,
+                         construct : str = "Cut-off, U") -> str:
     """
     Format the name of the exchange.
     :param name: exchange name.
@@ -535,7 +536,7 @@ def format_exchange_name(name: str, reference_product: str, location: str, unit:
                 else:
                     exchange_name += f"| {i} {reference_product}"
 
-        exchange_name += " | Cut-off, U"
+        exchange_name += f" | {construct}"
 
     else:
         # check first if name appears in ecoinvent-uvek mapping list

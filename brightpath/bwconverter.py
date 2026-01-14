@@ -69,7 +69,8 @@ class BrigthwayConverter:
         self.export_dir = Path(export_dir) or Path.cwd()
 
 
-    def format_inventories_for_simapro(self, database: str):
+    def format_inventories_for_simapro(self, database: str,
+                                       construct: str = "Cut-off, U"):
         """
         Format inventories to Simapro format.
         :param database: name of the database to link to.
@@ -114,11 +115,12 @@ class BrigthwayConverter:
 
                 if field == "Process name":
                     dataset_name = format_exchange_name(
-                        activity["name"],
-                        activity["reference product"],
-                        activity["location"],
-                        activity["unit"],
-                        database
+                        name=activity["name"],
+                        reference_product = activity["reference product"],
+                        location = activity["location"],
+                        unit = activity["unit"],
+                        database = database,
+                        construct= construct
                     )
                     rows.extend(
                         [
@@ -284,7 +286,8 @@ class BrigthwayConverter:
                             exc["reference product"],
                             exc.get("location", "GLO"),
                             exc["unit"],
-                            database
+                            database,
+                            construct,
                         )
 
                         u_type = get_simapro_uncertainty_type(exc.get("uncertainty type"))
@@ -384,7 +387,8 @@ class BrigthwayConverter:
                             exc["reference product"],
                             exc.get("location", "GLO"),
                             exc["unit"],
-                            database
+                            database,
+                            construct,
                         )
 
                         u_type = get_simapro_uncertainty_type(exc.get("uncertainty type"))
@@ -432,7 +436,8 @@ class BrigthwayConverter:
 
         return rows
 
-    def convert_to_simapro(self, database: str = "ecoinvent", format: str = "csv") -> [str, list]:
+    def convert_to_simapro(self, database: str = "ecoinvent", format: str = "csv",
+                           construct: str = "Cut-off, U") -> [str, list]:
         """
         Convert the inventories to Simapro CSV files.
         :param database: Name of the database to link to. Default is `ecoinvent`, but can be `uvek`.
@@ -441,7 +446,7 @@ class BrigthwayConverter:
         if database not in ("ecoinvent", "uvek"):
             raise ValueError("Database must be either `ecoinvent` or `uvek`")
 
-        data = self.format_inventories_for_simapro(database)
+        data = self.format_inventories_for_simapro(database,construct)
 
         if format == "data":
             return data
