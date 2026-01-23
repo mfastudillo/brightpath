@@ -647,6 +647,33 @@ def format_exchange_name(
                     exchange_name += f"| {i} {reference_product}"
 
         exchange_name += " | Cut-off, U"
+    elif database == "mapping_ecoinvent":
+        # TODO: tweak stuff so the technosphere does all that it needs to do for the
+        # ecoinvent and the production uses a different strategy
+        if name.startswith('Link to:'):
+            exchange_name = f"{name} {{{location}}}"
+
+        else:
+            # ecoinvent case
+            reference_product = reference_product[0].upper() + reference_product[1:]
+            name = name[0].upper() + name[1:]
+
+            exchange_name = f"{reference_product} {{{location}}}| {name}"
+
+            for i in ["market for", "market group for"]:
+                if i in name.lower():
+                    exchange_name = f"{reference_product} {{{location}}}"
+                    reference_product = reference_product[0].lower() + reference_product[1:]
+
+                    if (
+                        reference_product.lower() in ecoinvent_exceptions["market"]
+                        and location == "GLO"
+                    ):
+                        exchange_name += f"| {i}"
+                    else:
+                        exchange_name += f"| {i} {reference_product}"
+
+            exchange_name += " | Cut-off, U"
 
     else:
         # check first if name appears in ecoinvent-uvek mapping list
