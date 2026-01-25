@@ -590,8 +590,8 @@ class BrightwayConverter:
         :raises ValueError: If an unsupported ``database`` value is supplied.
         """
 
-        if database not in ("ecoinvent", "uvek","mapping_ecoinvent_cutoff"):
-            raise ValueError("Database must be either `ecoinvent` or `uvek`")
+        # if database not in ("ecoinvent", "uvek"):
+        #     raise ValueError("Database must be either `ecoinvent` or `uvek`")
 
         data = self.format_inventories_for_simapro(database)
 
