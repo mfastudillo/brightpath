@@ -647,7 +647,8 @@ def format_exchange_name(
                     exchange_name += f"| {i} {reference_product}"
 
         exchange_name += " | Cut-off, U"
-    # case 1
+    # case 1, all inputs are from ecoinvent, thus we only change the way of 'outputs'
+    # in this case, all start with "Link to"
     elif database == "mapping_ecoinvent_cutoff":
         # TODO: tweak stuff so the technosphere does all that it needs to do for the
         # ecoinvent and the production uses a different strategy
@@ -676,13 +677,19 @@ def format_exchange_name(
                         exchange_name += f"| {i} {reference_product}"
 
             exchange_name += " | Cut-off, U"
+    # all links to "import_cutoff_mapping"
+    elif database == "other_cutoff":
+        exchange_name = f"{name} {{{location}}}"
 
-    else:
+    elif database == "uvek":
         # check first if name appears in ecoinvent-uvek mapping list
         if (name, location, unit, reference_product) in ecoinvent_uvek_mapping:
             return ecoinvent_uvek_mapping[(name, location, unit, reference_product)]
         # database to link to is uvek.
         exchange_name = f"{name}/{location} U"
+    else:
+        # the rest of cases
+        exchange_name = f"{name} {{{location}}}"
 
     return exchange_name
 
