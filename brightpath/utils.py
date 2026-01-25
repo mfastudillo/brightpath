@@ -650,7 +650,8 @@ def format_exchange_name(
     elif database == "mapping_ecoinvent":
         # TODO: tweak stuff so the technosphere does all that it needs to do for the
         # ecoinvent and the production uses a different strategy
-        if name.startswith('Link to:'):
+        badly_formatted_names = ['Mixed plastics recycling, alternative process (empty in cut-off)']
+        if name.startswith('Link to:') or name in badly_formatted_names:
             exchange_name = f"{name} {{{location}}}"
 
         else:
