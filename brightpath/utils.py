@@ -647,7 +647,8 @@ def format_exchange_name(
                     exchange_name += f"| {i} {reference_product}"
 
         exchange_name += " | Cut-off, U"
-    elif database == "mapping_ecoinvent":
+    # case 1
+    elif database == "mapping_ecoinvent_cutoff":
         # TODO: tweak stuff so the technosphere does all that it needs to do for the
         # ecoinvent and the production uses a different strategy
         badly_formatted_names = ['Mixed plastics recycling, alternative process (empty in cut-off)']
