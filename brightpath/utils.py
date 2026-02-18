@@ -292,6 +292,21 @@ def get_simapro_ecoinvent_exceptions():
 
 ecoinvent_exceptions = get_simapro_ecoinvent_exceptions()
 
+def get_simapro_palmoil_exceptions():
+
+    filename = "simapro_palmoil_exceptions.yaml"
+    filepath = DATA_DIR / "export" / filename
+
+    # read YAML file
+    with open(filepath, "r") as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+
+    return data
+
+palmoil_exepctions = get_simapro_palmoil_exceptions()
 
 def get_waste_exchange_names():
     """Return the keywords that identify waste-treatment exchanges.
@@ -546,6 +561,14 @@ def is_a_waste_treatment(name: str, database: str) -> bool:
                 if not any(
                     term.lower() in name.lower()
                     for term in ecoinvent_exceptions["waste"]
+                ):
+                    return True
+                else:
+                    return False
+            elif database in ["mapping_ecoinvent_cutoff"]:
+                if not any(
+                    term.lower() in name.lower()
+                    for term in palmoil_exepctions["waste"]
                 ):
                     return True
                 else:
