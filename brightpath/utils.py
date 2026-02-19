@@ -703,6 +703,8 @@ def format_exchange_name(
     # all links to "import_cutoff_mapping"
     elif database == "other_cutoff":
         exchange_name = f"{name} {{{location}}}"
+    elif "foreground_system" in database:
+        exchange_name = f"{name} {{{location}}}"
 
     elif database == "uvek":
         # check first if name appears in ecoinvent-uvek mapping list
