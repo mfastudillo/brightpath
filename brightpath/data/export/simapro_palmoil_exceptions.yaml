@@ -1,7 +1,5 @@
 waste:
-  - "Link to: Plastics waste to landfill {MY}"
-  - "Link to: Plastics waste to landfill {NG}"
-  - "Link to: Plastics waste to landfill {TH}"
-  - "Link to: Plastics waste to landfill {ID}"
-  - "Link to: Plastics waste to landfill {CO}"
-  - "Link to: Steel scrap to recycling {NG}"
+  - "Link to: Plastics waste to landfill"
+  - "Link to: Steel scrap to recycling"
+  - "Link to: Plastics waste to recycling"
+
