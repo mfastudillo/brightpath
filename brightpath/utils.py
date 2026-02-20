@@ -565,7 +565,7 @@ def is_a_waste_treatment(name: str, database: str) -> bool:
                     return True
                 else:
                     return False
-            elif database in ["mapping_ecoinvent_cutoff","other_cutoff"]:
+            elif database in ["mapping_ecoinvent_cutoff","other_cutoff"] or ('foreground' in database):
                 if not any(
                     term.lower() in name.lower()
                     for term in palmoil_exepctions["waste"]
