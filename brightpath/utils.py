@@ -538,6 +538,28 @@ def is_activity_waste_treatment(activity: dict, database: str) -> bool:
 
     return False
 
+def _contains_str(name:str,term:str)->bool:
+    """Check whether a string contains a term as a whole word.
+
+    Uses regex word boundaries to avoid false positives from partial matches
+    (e.g. 'waste' will not match 'wastewater' or 'awasteathing').
+
+    :param name: The string to search in.
+    :param term: The word to search for.
+    :returns: True if the term is found as a whole word, False otherwise.
+    :rtype: bool
+
+    Examples::
+
+        >>> _contains_word("waste management", "waste")
+        True
+        >>> _contains_word("awasteathing", "waste")
+        False
+    """
+    pattern = rf"\b{term}\b"
+    
+    contains  = bool(re.search(pattern, name, re.IGNORECASE))
+    return contains
 
 def is_a_waste_treatment(name: str, database: str) -> bool:
     """Check whether an exchange name matches waste-treatment keywords.
@@ -555,7 +577,7 @@ def is_a_waste_treatment(name: str, database: str) -> bool:
         "incineration plant"
     ]
 
-    if any(term.lower() in name.lower() for term in WASTE_TERMS) is True:
+    if any(_contains_str(name.lower(),term.lower()) for term in WASTE_TERMS) is True:
         if any(term.lower() in name.lower() for term in NOT_WASTE_TERMS) is False:
             if database == "ecoinvent":
                 if not any(
